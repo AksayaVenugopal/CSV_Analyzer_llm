@@ -17,9 +17,9 @@ class CSVMongoUploader {
             this.client = new MongoClient(this.mongoUri);
             await this.client.connect();
             this.db = this.client.db(this.dbName);
-            console.log('✅ Connected to MongoDB successfully');
+            console.log('Connected to MongoDB successfully');
         } catch (error) {
-            console.error('❌ MongoDB connection failed:', error.message);
+            console.error('MongoDB connection failed:', error.message);
             throw error;
         }
     }
@@ -28,7 +28,7 @@ class CSVMongoUploader {
     async disconnect() {
         if (this.client) {
             await this.client.close();
-            console.log('✅ Disconnected from MongoDB');
+            console.log('Disconnected from MongoDB');
         }
     }
 
@@ -123,7 +123,7 @@ class CSVMongoUploader {
                     if (errors.length > 0) {
                         console.warn(`⚠️  ${errors.length} parsing errors occurred`);
                     }
-                    console.log(`✅ CSV parsed successfully. ${results.length} rows found`);
+                    console.log(`CSV parsed successfully. ${results.length} rows found`);
                     resolve(results);
                 });
         });
@@ -150,11 +150,11 @@ class CSVMongoUploader {
                 });
             }
             
-            console.log(`✅ Successfully uploaded ${result.insertedCount || data.length} documents to collection: ${collectionName}`);
+            console.log(`Successfully uploaded ${result.insertedCount || data.length} documents to collection: ${collectionName}`);
             return result;
             
         } catch (error) {
-            console.error('❌ Upload failed:', error.message);
+            console.error('Upload failed:', error.message);
             throw error;
         }
     }
@@ -174,9 +174,9 @@ class CSVMongoUploader {
             try {
                 const result = await collection.insertMany(batch, { ordered: false });
                 totalInserted += result.insertedCount;
-                console.log(`✅ Batch ${i + 1}/${totalBatches} completed (${result.insertedCount} records)`);
+                console.log(`Batch ${i + 1}/${totalBatches} completed (${result.insertedCount} records)`);
             } catch (error) {
-                console.error(`❌ Batch ${i + 1} failed:`, error.message);
+                console.error(`Batch ${i + 1} failed:`, error.message);
                 // Continue with next batch
             }
         }
@@ -229,7 +229,7 @@ class CSVMongoUploader {
                     index_size_mb: ((stats.totalIndexSize || 0) / 1024 / 1024).toFixed(2)
                 };
             } catch (error) {
-                console.warn('⚠️  Could not get detailed collection stats');
+                console.warn('Could not get detailed collection stats');
                 description.collection_stats = { error: 'Stats unavailable' };
             }
             
@@ -278,7 +278,7 @@ class CSVMongoUploader {
             return description;
             
         } catch (error) {
-            console.error('❌ Failed to get collection description:', error.message);
+            console.error('Failed to get collection description:', error.message);
             return { error: `Error retrieving collection description: ${error.message}` };
         } finally {
             await this.disconnect();
@@ -381,28 +381,28 @@ class CSVMongoUploader {
 
     // NEW: Pretty print collection description
     async printCollectionDescription(collectionName, options = {}) {
-        console.log(`\n🔍 Getting description for collection: ${collectionName}`);
+        console.log(`\nGetting description for collection: ${collectionName}`);
         console.log('═'.repeat(60));
         
         const description = await this.getCollectionDescription(collectionName, options);
         
         if (description.error) {
-            console.error(`❌ ${description.error}`);
+            console.error(`    ${description.error}`);
             if (description.availableCollections) {
-                console.log(`📋 Available collections: ${description.availableCollections.join(', ')}`);
+                console.log(`Available collections: ${description.availableCollections.join(', ')}`);
             }
             return description;
         }
         
         // Basic Info
-        console.log(`\n📊 BASIC INFORMATION`);
+        console.log(`\nBASIC INFORMATION`);
         console.log(`   Database: ${description.database_name}`);
         console.log(`   Collection: ${description.collection_name}`);
         console.log(`   Document Count: ${description.document_count.toLocaleString()}`);
         
         // Storage Stats
 //        if (description.collection_stats && !description.collection_stats.error) {
-  //          console.log(`\n💾 STORAGE STATISTICS`);
+  //          console.log(`\n STORAGE STATISTICS`);
     //        console.log(`   Storage Size: ${description.collection_stats.size_mb} MB`);
       //      console.log(`   Index Size: ${description.collection_stats.index_size_mb} MB`);
         //    console.log(`   Avg Document Size: ${description.collection_stats.average_object_size} bytes`);
@@ -410,7 +410,7 @@ class CSVMongoUploader {
         
         // Creation Info
 //      if (description.creation_info && description.creation_info.has_upload_metadata) {
-  //          console.log(`\n📅 UPLOAD INFORMATION`);
+  //          console.log(`\nUPLOAD INFORMATION`);
     //        console.log(`   First Upload: ${description.creation_info.first_upload}`);
       //      console.log(`   Last Upload: ${description.creation_info.last_upload}`);
        // }
@@ -425,7 +425,7 @@ class CSVMongoUploader {
         
         // Schema Analysis
         if (description.schema_analysis && Object.keys(description.schema_analysis).length > 0) {
-            console.log(`\n📋 SCHEMA ANALYSIS`);
+            console.log(`\n SCHEMA ANALYSIS`);
             Object.keys(description.schema_analysis).forEach(field => {
                 const fieldInfo = description.schema_analysis[field];
                 console.log(`   • ${field}: ${fieldInfo.type} ${fieldInfo.sample_value ? `(e.g., ${fieldInfo.sample_value})` : ''}`);
@@ -434,7 +434,7 @@ class CSVMongoUploader {
         
         // Field Frequency
 //        if (description.field_frequency_analysis && Object.keys(description.field_frequency_analysis).length > 0) {
-  //          console.log(`\n📊 FIELD FREQUENCY ANALYSIS`);
+  //          console.log(`\nFIELD FREQUENCY ANALYSIS`);
     //        Object.keys(description.field_frequency_analysis).forEach(field => {
       //          const freq = description.field_frequency_analysis[field];
         //        console.log(`   • ${field}: ${freq.percentage}% (${freq.consistency})`);
@@ -458,15 +458,15 @@ class CSVMongoUploader {
         const startTime = Date.now();
         
         try {
-            console.log(`🚀 Starting CSV upload process...`);
-            console.log(`📄 File: ${filePath}`);
-            console.log(`🗄️  Collection: ${collectionName}`);
+            console.log(`Starting CSV upload process...`);
+            console.log(` File: ${filePath}`);
+            console.log(`  Collection: ${collectionName}`);
             
             // Connect to MongoDB
             await this.connect();
             
             // Read CSV
-            console.log(`📖 Reading CSV file...`);
+            console.log(`Reading CSV file...`);
             const rawData = await this.readCSV(filePath);
             
             if (rawData.length === 0) {
@@ -474,11 +474,11 @@ class CSVMongoUploader {
             }
             
             // Preprocess data
-            console.log(`⚙️  Preprocessing data...`);
+            console.log(`Preprocessing data...`);
             const processedData = this.preprocessData(rawData);
             
             // Upload to MongoDB
-            console.log(`⬆️  Uploading to MongoDB...`);
+            console.log(` Uploading to MongoDB...`);
             const result = await this.uploadToMongo(processedData, collectionName, {
                 batchSize: options.batchSize || 1000,
                 ...options
@@ -487,8 +487,8 @@ class CSVMongoUploader {
             const endTime = Date.now();
             const duration = ((endTime - startTime) / 1000).toFixed(2);
             
-            console.log(`\n🎉 Upload completed successfully!`);
-            console.log(`📊 Statistics:`);
+            console.log(`\n Upload completed successfully!`);
+            console.log(` Statistics:`);
             console.log(`   • Total records: ${rawData.length}`);
             console.log(`   • Successfully uploaded: ${result.insertedCount || processedData.length}`);
             console.log(`   • Time taken: ${duration} seconds`);
@@ -497,7 +497,7 @@ class CSVMongoUploader {
             return result;
             
         } catch (error) {
-            console.error(`💥 Upload failed:`, error.message);
+            console.error(` Upload failed:`, error.message);
             throw error;
         } finally {
             await this.disconnect();
@@ -523,7 +523,7 @@ class CSVMongoUploader {
                     totalIndexSize: collStats.totalIndexSize || 0
                 };
             } catch (adminError) {
-                console.warn('⚠️  Could not get detailed storage stats');
+                console.warn(' Could not get detailed storage stats');
                 stats = {
                     storageSize: 0,
                     avgObjSize: 0,
@@ -535,7 +535,7 @@ class CSVMongoUploader {
             const sampleDoc = await collection.findOne();
             const estimatedDocSize = sampleDoc ? JSON.stringify(sampleDoc).length : 0;
             
-            console.log(`📊 Collection Stats for '${collectionName}':`);
+            console.log(` Collection Stats for '${collectionName}':`);
             console.log(`   • Document count: ${count.toLocaleString()}`);
             console.log(`   • Storage size: ${(stats.storageSize / 1024 / 1024).toFixed(2)} MB`);
             console.log(`   • Index size: ${(stats.totalIndexSize / 1024 / 1024).toFixed(2)} MB`);
@@ -549,7 +549,7 @@ class CSVMongoUploader {
             };
             
         } catch (error) {
-            console.error('❌ Failed to get collection stats:', error.message);
+            console.error(' Failed to get collection stats:', error.message);
             throw error;
         } finally {
             await this.disconnect();
