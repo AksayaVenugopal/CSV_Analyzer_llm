@@ -5,10 +5,10 @@ import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
 
 const config = {
-    mongoUri: 'mongodb+srv://aks:aks@cluster0.bptf95x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    mongoUri: 'mongodb+srv://username:password@cluster0.bptf95x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     dbName: 'CSV_Analyzer',
     collectionName: 'CSV_Analyzer2',
-    geminiApiKey: 'AIzaSyDbQfrKP650QopuMKksSvpsfUrJ8kwGlFA'
+    geminiApiKey: 'your key'
 };
 
 const app = express();
