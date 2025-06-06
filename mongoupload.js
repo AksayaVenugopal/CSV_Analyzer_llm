@@ -561,7 +561,7 @@ class CSVMongoUploader {
 async function main() {
     // Configuration
     const config = {
-        mongoUri: 'mongodb+srv://aks:aks@cluster0.bptf95x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+        mongoUri: 'mongodb+srv://user:password@cluster0.bptf95x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
         dbName: 'CSV_Analyzer',
         csvFilePath: 'D://current projects//llm+rag//data//sales_data.csv',
         collectionName: 'CSV_Analyzer2',
